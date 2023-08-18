@@ -41,6 +41,34 @@ int locateWords(char matrix[WIDTH][HEIGHT]) {
         }
     }
 
+    fseek(f, 0, SEEK_SET);
+
+    // vertical
+    for (int x = 0; x < WIDTH; ++x) {
+        for (int y = 0; y < HEIGHT; ++y) {
+           char buffer[12];
+ 
+            int i = 0;
+            while (i < HEIGHT - y) {
+                buffer[i] = matrix[y + i][x];
+                buffer[i + 1] = '\0';
+                char line[256];
+                while (fgets(line, sizeof(line), f) != NULL) {
+                    line[strcspn(line, "\n")] = '\0';
+                    if (strcmp(buffer, line) == 0) {
+                        if (strcmp(buffer, "I") == 1) {
+                            printf("%s, %d:%d\n", buffer, y, x);
+                            return 1;
+                        }
+                    }
+                } 
+
+                fseek(f, 0, SEEK_SET);
+                ++i;
+            } 
+        }
+    }
+
     fclose(f);
     return 0;
 }
