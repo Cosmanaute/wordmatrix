@@ -1,10 +1,17 @@
 #include<string.h>
+#include<ctype.h>
 #include<stdio.h>
 #include<time.h>
 #include<stdlib.h>
 
 #define WIDTH 10
 #define HEIGHT 10
+
+void strToUpper(char *str) {
+    for (int i = 0; i < strlen(str); ++i) {
+        str[i] = toupper(str[i]);
+    }
+}
 
 int locateWords(char matrix[WIDTH][HEIGHT]) {
 
@@ -15,23 +22,22 @@ int locateWords(char matrix[WIDTH][HEIGHT]) {
         return 1;
     }
 
+    printf("\n\n__________\nHORIZONTAL\n\n");
+
     // horizontal
     for (int y = 0; y < HEIGHT; ++y) {
         for (int x = 0; x < WIDTH; ++x) {
-            char buffer[12];
- 
             int i = 0;
             while (i < WIDTH - x) {
+                char buffer[WIDTH - i + 1];
                 buffer[i] = matrix[y][x + i];
                 buffer[i + 1] = '\0';
-                char line[256];
+                char line[24];
                 while (fgets(line, sizeof(line), f) != NULL) {
                     line[strcspn(line, "\n")] = '\0';
+                    strToUpper(line);
                     if (strcmp(buffer, line) == 0) {
-                        if (strcmp(buffer, "I") == 1) {
-                            printf("%s, %d:%d\n", buffer, y, x);
-                            return 1;
-                        }
+                        printf("%s @ %d:%d\n", buffer, y + 1, x + 1);
                     }
                 } 
 
@@ -40,26 +46,25 @@ int locateWords(char matrix[WIDTH][HEIGHT]) {
             }
         }
     }
-
+    
     fseek(f, 0, SEEK_SET);
+    printf("\n\n________\nVERTICAL\n\n");
 
     // vertical
     for (int x = 0; x < WIDTH; ++x) {
         for (int y = 0; y < HEIGHT; ++y) {
-           char buffer[12];
  
             int i = 0;
             while (i < HEIGHT - y) {
+                char buffer[HEIGHT - i + 1];
                 buffer[i] = matrix[y + i][x];
                 buffer[i + 1] = '\0';
-                char line[256];
+                char line[24];
                 while (fgets(line, sizeof(line), f) != NULL) {
                     line[strcspn(line, "\n")] = '\0';
+                    strToUpper(line);
                     if (strcmp(buffer, line) == 0) {
-                        if (strcmp(buffer, "I") == 1) {
-                            printf("%s, %d:%d\n", buffer, y, x);
-                            return 1;
-                        }
+                        printf("%s @ %d:%d\n", buffer, y + 1, x + 1);
                     }
                 } 
 
@@ -69,6 +74,8 @@ int locateWords(char matrix[WIDTH][HEIGHT]) {
         }
     }
 
+    printf("________\n");
+
     fclose(f);
     return 0;
 }
@@ -76,8 +83,9 @@ int locateWords(char matrix[WIDTH][HEIGHT]) {
 int main(void) {
 
     char matrix[WIDTH][HEIGHT];
+    srand(time(NULL));
 
-    for (;;) {
+ //   for (;;) {
         for (int x = 0; x < WIDTH; ++x) {
             for (int y = 0; y < HEIGHT; ++y) {
 
@@ -98,7 +106,7 @@ int main(void) {
             return r;
         
         }
-    }
+   // }
 
     return 0;
 }
