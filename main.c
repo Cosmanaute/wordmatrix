@@ -7,6 +7,16 @@
 #define WIDTH 10
 #define HEIGHT 10
 
+void reverse(char* s) {
+    int i, tmp;
+    int len = strlen(s);
+    for (int i = 0; i < len/2; ++i) {
+        tmp = s[i];
+        s[i] = s[len-i-1];
+        s[len-i-1] = tmp;
+    }
+}
+
 void strToUpper(char *str) {
     for (int i = 0; i < strlen(str); ++i) {
         str[i] = toupper(str[i]);
@@ -39,6 +49,10 @@ int locateWords(char matrix[WIDTH][HEIGHT]) {
                     if (strcmp(buffer, line) == 0) {
                         printf("%s @ %d:%d\n", buffer, y + 1, x + 1);
                     }
+                    reverse(buffer);
+                    if (strlen(buffer) != 1 && strcmp(buffer, line) == 0) {
+                        printf("%s @ %d:%d\n", buffer, y + 1, x + 1);
+                    }
                 } 
 
                 fseek(f, 0, SEEK_SET);
@@ -64,6 +78,10 @@ int locateWords(char matrix[WIDTH][HEIGHT]) {
                     line[strcspn(line, "\n")] = '\0';
                     strToUpper(line);
                     if (strcmp(buffer, line) == 0) {
+                        printf("%s @ %d:%d\n", buffer, y + 1, x + 1);
+                    }
+                    reverse(buffer);
+                    if (strlen(buffer) != 1 && strcmp(buffer, line) == 0) {
                         printf("%s @ %d:%d\n", buffer, y + 1, x + 1);
                     }
                 } 
